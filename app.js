@@ -12,7 +12,7 @@ const newsletterRoutes = require("./router/subscriberRoutes");
 const app = express();
 
 
-const corsOption = { origin: 'http://localhost:5173' }
+const corsOption = { origin: 'https://givehopes.vercel.app' }
 app.use(cors(corsOption))
 
 app.use(express.json());
