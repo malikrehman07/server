@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema(
 
     // NGO ONLY FIELDS (VALIDATION HANDLED IN CONTROLLER)
     organizationName: String,
-    registrationNumber: String,
+    registrationNumber: mongoose.Schema.Types.Mixed,
     phone: String,
     address: String,
     website: { type: String, default: "" },
