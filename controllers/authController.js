@@ -35,18 +35,9 @@ exports.register = async (req, res) => {
 
     if (role === "Ngo" && req.files?.length > 0) {
       for (const file of req.files) {
-
-        // IMPORTANT: if using multer memoryStorage, use buffer
-        const result = await cloudinary.uploader.upload(
-          `data:${file.mimetype};base64,${file.buffer.toString("base64")}`,
-          {
-            folder: "ngo_documents",
-          }
-        );
-
         uploadedDocs.push({
-          url: result.secure_url,
-          public_id: result.public_id,
+          url: file.path,
+          public_id: file.filename,
         });
       }
     }
