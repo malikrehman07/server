@@ -27,5 +27,6 @@ router.get("/search", compaignController.searchCampaigns);
 // Public routes
 router.get("/read", compaignController.getAllCampaigns);
 router.get("/read/:id", compaignController.getCampaignById);
+router.get("/ngo-public/:ngoId", compaignController.getCampaignsByNgo);
 
 module.exports = router;

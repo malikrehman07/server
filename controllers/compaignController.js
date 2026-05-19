@@ -184,3 +184,16 @@ exports.searchCampaigns = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+// =========================
+// PUBLIC: GET CAMPAIGNS BY NGO ID
+// =========================
+exports.getCampaignsByNgo = async (req, res) => {
+  try {
+    const campaigns = await Campaign.find({ createdBy: req.params.ngoId, status: "active" })
+      .sort({ createdAt: -1 });
+    res.status(200).json({ success: true, compaigns: campaigns });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

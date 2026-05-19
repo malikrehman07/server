@@ -107,3 +107,31 @@ exports.getWithdrawalHistory = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+// =========================
+// PUBLIC: GET ALL APPROVED NGOs
+// =========================
+exports.getPublicNgos = async (req, res) => {
+  try {
+    const ngos = await User.find({ role: "Ngo", status: "approved" })
+      .select("organizationName description address phone website registrationNumber")
+      .sort({ createdAt: -1 });
+    res.status(200).json({ success: true, ngos });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// =========================
+// PUBLIC: GET NGO BY ID
+// =========================
+exports.getPublicNgoById = async (req, res) => {
+  try {
+    const ngo = await User.findOne({ _id: req.params.id, role: "Ngo", status: "approved" })
+      .select("organizationName description address phone website registrationNumber");
+    if (!ngo) return res.status(404).json({ message: "NGO not found" });
+    res.status(200).json({ success: true, ngo });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

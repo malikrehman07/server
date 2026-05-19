@@ -43,5 +43,8 @@ router.put(
 router.post("/withdrawal/record", protect, approvedNGOOnly, ngoController.recordWithdrawal);
 router.get("/withdrawal/history/:ngoId", protect, approvedNGOOnly, ngoController.getWithdrawalHistory);
 
+// PUBLIC ROUTES (No auth required)
+router.get("/public/all", ngoController.getPublicNgos);
+router.get("/public/:id", ngoController.getPublicNgoById);
 
 module.exports = router;
