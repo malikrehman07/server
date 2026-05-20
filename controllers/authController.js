@@ -234,7 +234,7 @@ exports.resetPassword = async (req, res) => {
 // =========================
 exports.updateProfile = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, oldPassword } = req.body;
     const user = await User.findById(req.user._id);
 
     if (!user) {
@@ -252,6 +252,13 @@ exports.updateProfile = async (req, res) => {
     }
 
     if (password) {
+      if (!oldPassword) {
+        return res.status(400).json({ message: "Previous password is required to change password" });
+      }
+      const isMatch = await bcrypt.compare(oldPassword, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ message: "Incorrect previous password" });
+      }
       if (password.length < 8) {
         return res.status(400).json({ message: "Password must be at least 8 characters" });
       }
