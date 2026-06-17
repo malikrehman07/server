@@ -241,6 +241,17 @@ exports.updateProfile = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Require old password for any changes
+    if (!oldPassword) {
+      return res.status(400).json({ message: "Current password is required to save changes" });
+    }
+
+    // Verify old password
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Incorrect current password" });
+    }
+
     if (email) {
       const cleanEmail = email.toLowerCase().trim();
       // Check if another user already has this email
@@ -252,13 +263,6 @@ exports.updateProfile = async (req, res) => {
     }
 
     if (password) {
-      if (!oldPassword) {
-        return res.status(400).json({ message: "Previous password is required to change password" });
-      }
-      const isMatch = await bcrypt.compare(oldPassword, user.password);
-      if (!isMatch) {
-        return res.status(400).json({ message: "Incorrect previous password" });
-      }
       if (password.length < 8) {
         return res.status(400).json({ message: "Password must be at least 8 characters" });
       }
